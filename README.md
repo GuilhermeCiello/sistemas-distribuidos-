@@ -1,51 +1,22 @@
-# 🖥️ Sistemas Distribuídos
+Para executar o trabalho é necessário ter o Docker instalado, baixar a pasta API e navegar até ela:
+cd /caminho/para/api
 
-## 📂 Estrutura do Projeto
-O projeto contém os seguintes serviços:
-
-- **MySQL** (Banco de dados)  
-- **Flask App** (API em Python)  
-- **Node App** (API em Node.js)  
-- **Monitor Python** (processo que roda monitoramento em Python)  
-- **Monitor JS** (processo que roda monitoramento em Node.js)  
-
----
-
-## ⚙️ Como Rodar o Projeto
-
-### 1. Clone ou copie o repositório
-```bash
-git clone https://github.com/seu-repositorio/api.git
-cd api
-
-2. Suba os containers
+após isso executar o docker compose para gerenciar os containers
 docker-compose up -d
 
-3. Verifique se os containers estão rodando
-docker ps
+depois que eles estiverem em funcionamento executar o comando para ver se estão rodando corretamente
+ docker ps
 
-
-Você deverá ver containers como:
-
-mysql-container
-
-flask-app
-
-node-app
-
-monitor-python
-
-monitor-js
-
-🧪 Testando a API Flask
-
-No PowerShell, execute os comandos abaixo:
-
-👉 Incrementar contador
+após isso no terminal do powershell executar os comandos para testar get e post
 
 Invoke-RestMethod -Uri "http://localhost:3000/incrementar" -Method Post
-
-
-👉 Consultar contador
-
 Invoke-RestMethod -Uri "http://localhost:3000/1" -Method Get
+
+Invoke-RestMethod -Uri "http://localhost:3001/incrementar" -Method Post
+Invoke-RestMethod -Uri "http://localhost:3001/1" -Method Get
+
+para verificar a geração de palavras aleatórias no banco de dados pode-se abrir outro terminal e verificar os logs 
+docker-compose logs -f monitor
+
+ou verificar diretamente no banco de dados
+docker-compose exec mysql-container mysql -u root -p senha123 -e "USE meuapp; SELECT * FROM eventos;"
