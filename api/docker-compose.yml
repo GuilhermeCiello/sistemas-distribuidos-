@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  mysql-container:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: senha123
+      MYSQL_DATABASE: meuapp
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - minha-rede
+
+  flask-app:
+    build: .
+    container_name: flask-app
+    ports:
+      - "3000:3000"  
+    environment:
+      - FLASK_ENV=development
+    depends_on:
+      - mysql-container
+    volumes:
+      - .:/app
+    networks:
+      - minha-rede
+
+  node-app:  
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    container_name: node-app
+    ports:
+      - "3001:3000"  
+    depends_on:
+      - mysql-container
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - minha-rede
+
+  monitor-python: 
+    build: .
+    container_name: monitor-python
+    depends_on:
+      - mysql-container
+    volumes:
+      - .:/app
+    command: python monitor.py
+    networks:
+      - minha-rede
+
+  monitor-js:  
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    container_name: monitor-js
+    depends_on:
+      - mysql-container
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run monitor
+    networks:
+      - minha-rede
+
+volumes:
+  mysql_data:
+
+networks:
+  minha-rede:
+    external: true
