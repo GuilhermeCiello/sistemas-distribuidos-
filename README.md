@@ -2,6 +2,7 @@
 
 ## Pré-requisitos
 - Ter o **Docker** instalado.
+- Baixar ou clonar o repositório
 
 ## Passo a passo
 
