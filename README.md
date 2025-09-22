@@ -1,22 +1,37 @@
-Para executar o trabalho é necessário ter o Docker instalado, baixar a pasta API e navegar até ela:
-cd /caminho/para/api
+# Guia de Execução do Trabalho
 
-após isso executar o docker compose para gerenciar os containers
+## Pré-requisitos
+- Ter o **Docker** instalado.
+
+## Passo a passo
+
+### 1. Navegar até a pasta da API
+```bash
+cd /caminho/para/api
+```
+### 2. Subir os containers com Docker Compose]
+
 docker-compose up -d
 
-depois que eles estiverem em funcionamento executar o comando para ver se estão rodando corretamente
- docker ps
-
-após isso no terminal do powershell executar os comandos para testar get e post
-
+### 3. Verificar se os containers estão rodando
+```bash
+docker ps
+```
+### 4. Testar os endpoints no PowerShell
+```bash
 Invoke-RestMethod -Uri "http://localhost:3000/incrementar" -Method Post
 Invoke-RestMethod -Uri "http://localhost:3000/1" -Method Get
 
 Invoke-RestMethod -Uri "http://localhost:3001/incrementar" -Method Post
 Invoke-RestMethod -Uri "http://localhost:3001/1" -Method Get
+```
+### 5. Verificar geração de palavras aleatórias
 
-para verificar a geração de palavras aleatórias no banco de dados pode-se abrir outro terminal e verificar os logs 
+Opção 1: Via logs do monitor
+```bash
 docker-compose logs -f monitor
-
-ou verificar diretamente no banco de dados
+```
+Opção 2: Diretamente no banco de dados
+```bash
 docker-compose exec mysql-container mysql -u root -p senha123 -e "USE meuapp; SELECT * FROM eventos;"
+```
